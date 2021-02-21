@@ -64,6 +64,7 @@ fn main() {
 
 	// The Docs.rs build system doesn't have gnutls installed.
 	if let Ok(_) = env::var("DOCS_RS") {
+		File::create( OUT_PATH.join("c_bindings.rs") ).expect("Unable to create dummy file in output path");
 		return
 	}
 
@@ -129,7 +130,10 @@ fn main() {
 	bgb = enable_module(&mut compiler, bgb, "core", "core_service");
 	bgb = enable_module(&mut compiler, bgb, "util", "util_lib");
 
+	if cfg!(feature = "cadet") { bgb = enable_module(&mut compiler, bgb, "cadet", "cadet_service"); }
+
 	if cfg!(feature = "fs")	{ bgb = enable_module(&mut compiler, bgb, "fs", "fs_service"); }
+
 	if cfg!(feature = "peerstore")	{
 		bgb = add_header_file(bgb, "peerstore_plugin", &include_dir);
 		bgb = add_header_file(bgb, "peerstore_service", &include_dir);
