@@ -129,6 +129,7 @@ fn main() {
 	bgb = add_header_file( bgb, "util_lib", &include_dir );
 	bgb = enable_module(&mut compiler, bgb, "core", "core_service");
 	bgb = enable_module(&mut compiler, bgb, "util", "util_lib");
+	bgb = enable_module(&mut compiler, bgb, "identity", "identity_service");
 
 	if cfg!(feature = "cadet") { bgb = enable_module(&mut compiler, bgb, "cadet", "cadet_service"); }
 
