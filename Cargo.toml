@@ -22,7 +22,7 @@ core = []
 
 [lib]
 name = "gnunet_sys"
-path = "bindings.rs"
+path = "src/lib.rs"
 
 [build-dependencies]
 bindgen = "^0.55"
