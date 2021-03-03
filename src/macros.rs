@@ -1,5 +1,7 @@
 //! In this file we reimplement certain functional C macros that didn't get translated automatically.
 
+#![allow(non_snake_case)]
+
 use crate::bindings::*;
 
 use std::ffi::CString;
