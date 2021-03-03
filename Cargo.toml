@@ -1,6 +1,6 @@
 [package]
 name = "gnunet-sys"
-version = "0.0.2"
+version = "0.0.3"
 description = "Rust FFI bindings for the gnunet C API."
 edition = "2018"
 authors = ["Danny de Jong"]
