@@ -62,12 +62,6 @@ fn enable_module( compiler: &mut cc::Build, mut bgb: bindgen::Builder, module: &
 
 fn main() {
 
-	// The Docs.rs build system doesn't have gnutls installed.
-	if let Ok(_) = env::var("DOCS_RS") {
-		File::create( OUT_PATH.join("c_bindings.rs") ).expect("Unable to create dummy file in output path");
-		return
-	}
-
 	let mut compiler = cc::Build::new();
 
 	let mut include_dir = PathBuf::new();
@@ -143,7 +137,20 @@ fn main() {
 		println!("cargo:rustc-link-lib=gnunetpeerstore");
 	}
 
-	// Generate bindings
-	bgb.generate().expect("Unable to generate FFI bindings!")
-		.write_to_file( OUT_PATH.join("c_bindings.rs") ).expect("Unable to write FFI bindings to file!");
+	// Docs.rs doesn't have gnunet development headers available on their docker system.
+	// In this case, we use a copy of pregenerated bindings.
+	let backup_file = PathBuf::from( env::var("CARGO_MANIFEST_DIR").unwrap() + "/bindgen_backup.rs" );
+	if let Err(_) = env::var("DOCS_RS") {
+
+		// Generate bindings
+		let bindings = bgb.generate().expect("Unable to generate FFI bindings!");
+		bindings.write_to_file( OUT_PATH.join("c_bindings.rs") ).expect("Unable to write FFI bindings to file!");
+
+		if let Ok(_) = env::var("UPDATE_BINDGEN_BACKUP") {
+			fs::copy( OUT_PATH.join("c_bindings.rs"), backup_file ).expect("Unable to copy bindgen backup file.");
+		}
+	}
+	else {
+		fs::copy( backup_file, OUT_PATH.join("c_bindings.rs") ).expect("Unable to copy bindgen backup file.");
+	}
 }

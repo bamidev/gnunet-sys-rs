@@ -1,6 +1,6 @@
 [package]
 name = "gnunet-sys"
-version = "0.0.1"
+version = "0.0.2"
 description = "Rust FFI bindings for the gnunet C API."
 edition = "2018"
 authors = ["Danny de Jong"]
@@ -9,7 +9,7 @@ publish = true
 keywords = ["gnunet"]
 categories = []
 readme = "README.md"
-repository = "https://github.com/bamilab/gnunet-sys"
+repository = "https://github.com/bamilab/gnunet-sys-rs"
 
 [features]
 default = ["core"]
