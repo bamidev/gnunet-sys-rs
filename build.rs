@@ -90,7 +90,8 @@ fn main() {
 		}
 	}
 	let mut bgb = bindgen::Builder::default()
-		.clang_arg(format!("-I{}", include_dir.as_os_str().to_str().unwrap()));
+		.clang_arg(format!("-I{}", include_dir.as_os_str().to_str().unwrap()))
+		.size_t_is_usize(true);
 
 	bgb = add_header_file( bgb, "ats_service", &include_dir );
 	bgb = add_header_file( bgb, "bandwidth_lib", &include_dir );
@@ -122,6 +123,7 @@ fn main() {
 	bgb = add_header_file( bgb, "service_lib", &include_dir );
 	bgb = add_header_file( bgb, "scheduler_lib", &include_dir );
 	bgb = add_header_file( bgb, "signal_lib", &include_dir );
+	bgb = add_header_file( bgb, "signatures", &include_dir );
 	bgb = add_header_file( bgb, "strings_lib", &include_dir );
 	bgb = add_header_file( bgb, "time_lib", &include_dir );
 	bgb = add_header_file( bgb, "transport_service", &include_dir );
