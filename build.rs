@@ -65,7 +65,7 @@ fn main() {
 	// Docs.rs doesn't have gnunet development headers available on their docker system.
 	// In this case, we use a copy of pregenerated bindings.
 	let backup_file = PathBuf::from( env::var("CARGO_MANIFEST_DIR").unwrap() + "/bindgen_backup.rs" );
-	if let Err(_) = env::var("DOCS_RS") {
+	if let Ok(_) = env::var("DOCS_RS") {
 
 		fs::copy( backup_file, OUT_PATH.join("c_bindings.rs") ).expect("Unable to copy bindgen backup file.");
 		return;
