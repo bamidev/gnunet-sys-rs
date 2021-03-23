@@ -94,6 +94,8 @@ fn main() {
 	}
 	let mut bgb = bindgen::Builder::default()
 		.clang_arg(format!("-I{}", include_dir.as_os_str().to_str().unwrap()))
+		.derive_eq( true )
+		.derive_hash( true )
 		.size_t_is_usize(true);
 
 	bgb = add_header_file( bgb, "ats_service", &include_dir );
@@ -136,15 +138,13 @@ fn main() {
 	bgb = enable_module(&mut compiler, bgb, "util", "util_lib");
 	bgb = enable_module(&mut compiler, bgb, "identity", "identity_service");
 
-	if cfg!(feature = "cadet") { bgb = enable_module(&mut compiler, bgb, "cadet", "cadet_service"); }
+	bgb = enable_module(&mut compiler, bgb, "cadet", "cadet_service");
 
-	if cfg!(feature = "fs")	{ bgb = enable_module(&mut compiler, bgb, "fs", "fs_service"); }
+	bgb = enable_module(&mut compiler, bgb, "fs", "fs_service");
 
-	if cfg!(feature = "peerstore")	{
-		bgb = add_header_file(bgb, "peerstore_plugin", &include_dir);
-		bgb = add_header_file(bgb, "peerstore_service", &include_dir);
-		println!("cargo:rustc-link-lib=gnunetpeerstore");
-	}
+	bgb = add_header_file(bgb, "peerstore_plugin", &include_dir);
+	bgb = add_header_file(bgb, "peerstore_service", &include_dir);
+	println!("cargo:rustc-link-lib=gnunetpeerstore");
 
 	// Generate bindings
 	let bindings = bgb.generate().expect("Unable to generate FFI bindings!");
